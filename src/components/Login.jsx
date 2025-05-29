@@ -2,9 +2,13 @@ import { BG_IMG_URL } from "../utils/constant"
 import Header from "./Header"
 import { useState, useRef } from "react"
 import { validate } from '../utils/validate'
+import { createUserWithEmailAndPassword , signInWithEmailAndPassword, updateProfile  } from "firebase/auth";
+import { auth } from "../utils/firebaseConfig";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
-
+  const dispatch = useDispatch()
   const [signIn, setSignIn] = useState(true)
   const [error, setError] = useState(null);
 
@@ -24,15 +28,54 @@ const Login = () => {
     clearInputs();
   }
 
-  const handleEvent = () => {
+  const handleEvent = (e) => {
+    e.preventDefault()
     let checkValidate = validate(email.current.value, password.current.value)
-    console.log(checkValidate)
     if(checkValidate) {
       setError(checkValidate)
     } else {
-      clearInputs();
-      console.log(checkValidate)
-
+      if(!signIn) { 
+        console.log("Sign Up")
+        console.log(name.current.value);
+        // let name = 
+        createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+          .then((userCredential) => {
+            // Signed up 
+            const user = userCredential.user;
+            updateProfile(user, {
+              displayName: name.current.value, 
+              photoURL: "https://occ-0-8551-2164.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABTZ2zlLdBVC05fsd2YQAR43J6vB1NAUBOOrxt7oaFATxMhtdzlNZ846H3D8TZzooe2-FT853YVYs8p001KVFYopWi4D4NXM.png?r=229"
+              
+            }).then(() => {
+              // /auth.currentUser.reload()
+              let updatedUser = auth.currentUser
+              console.log(updatedUser)
+              dispatch(addUser({
+                uid: updatedUser.uid,
+                email: updatedUser.email,
+                displayName: updatedUser.displayName,
+                photoURL: updatedUser.photoURL
+              }));
+              clearInputs();
+            }).catch((error) => {
+                setError(error.message)
+            });
+            // ...
+          })
+          .catch((error) => {
+            setError(error.message)
+            // ..
+          });
+      } else {
+        signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          clearInputs();
+        })
+        .catch((error) => {
+          setError(error.message)
+        });
+      }
     }
   }
 
