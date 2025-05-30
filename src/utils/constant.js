@@ -19,6 +19,5 @@ export const TOP_RATED_MOVIE_API = "https://api.themoviedb.org/3/movie/top_rated
 export const UPCOMING_MOVIE_API = "https://api.themoviedb.org/3/movie/upcoming?&page=1";
 
 export const TMDB_MG_PATH = "https://image.tmdb.org/t/p/original"
-
 export const GPT_API_KEY = import.meta.env.VITE_GPT_API_KEY
 
