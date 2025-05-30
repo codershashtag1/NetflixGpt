@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useDispatch } from "react-redux";
-import { options } from "../src/utils/constant";
+import { options } from "../src/utils/constant"
 import { TRENDING_MOVIE_API, NOW_Playing_MOVIE_API, POPULAR_MOVIE_API, UPCOMING_MOVIE_API, TOP_RATED_MOVIE_API } from "../src/utils/constant";
 import { addTrendingMovie, addNowPlayingMovie, addPopularMovie, addUpcomingMovie, addTopRatedMovie } from "../src/utils/moviesStore";
 
@@ -12,6 +12,7 @@ const useMoviesAPI = (api) => {
   }, []);
 
   const fetchLatestMovie = async () => {
+    console.log(options);
     const trendindMovieData = await fetch(api, options);
     const latestMovieJson = await trendindMovieData.json();
 
