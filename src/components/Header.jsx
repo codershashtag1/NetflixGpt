@@ -7,12 +7,14 @@ import { addUser, removeUser } from "../utils/userSlice";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { signOut } from "firebase/auth";
+import { isShowGPT } from '../utils/gptStore';
 
 const Header = () => {
   const dispatch = useDispatch()
   const navidate = useNavigate()
   const user = useSelector(store => store.user)
-  console.log(user);
+  const gpt = useSelector(store => store.gpt.showGPT)
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
@@ -31,11 +33,13 @@ const Header = () => {
     }
   }, []);
 
-  const [showDropdown, setShowDropdown] = useState(false);
-
   const handleProfileClick = () => {
     setShowDropdown((prev) => !prev);
   };
+
+  const handleShowGPT = () => {
+    dispatch(isShowGPT())
+  }
 
   const handleSignOut = () => {
     signOut(auth);
@@ -47,6 +51,8 @@ const Header = () => {
       <img alt="Logo_Url" src={LOGO_URL} className="w-48" />
       {user &&
         <div className="relative flex items-center gap-4">
+          <button onClick={handleShowGPT}
+          className='text-white font-bold bg-green-700 px-4 py-2 rounded-lg'>{gpt === true ? "Open Browse" : "GPT Search"}</button>
           <span className="text-white font-bold">({user?.displayName})</span>
           <img
             alt="Profile Image"

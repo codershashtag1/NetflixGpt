@@ -28,16 +28,12 @@ const Login = () => {
     clearInputs();
   }
 
-  const handleEvent = (e) => {
-    e.preventDefault()
+  const handleEvent = () => {
     let checkValidate = validate(email.current.value, password.current.value)
     if(checkValidate) {
       setError(checkValidate)
     } else {
       if(!signIn) { 
-        console.log("Sign Up")
-        console.log(name.current.value);
-        // let name = 
         createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
           .then((userCredential) => {
             // Signed up 
@@ -49,7 +45,6 @@ const Login = () => {
             }).then(() => {
               // /auth.currentUser.reload()
               let updatedUser = auth.currentUser
-              console.log(updatedUser)
               dispatch(addUser({
                 uid: updatedUser.uid,
                 email: updatedUser.email,
