@@ -6,7 +6,7 @@ const MovieSuggestion = () => {
   const movies = useSelector(store => store?.movie)
 
   return (
-    <div className='bg-black -mt-20'>
+    <div className='bg-black'>
       <MovieList title="Trending Movies" movies={movies.trendingMovie}/>
       <MovieList title="Now Playing Movies" movies={movies.nowPlayingMovie}/>
       <MovieList title="Popular Movies" movies={movies.popularMovie}/>

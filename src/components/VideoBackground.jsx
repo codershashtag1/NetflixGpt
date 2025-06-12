@@ -10,7 +10,7 @@ const VideoBackground = (props) => {
   if(trailerVideo == null) return null
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-full">
       <iframe
         className="w-full h-screen"
         src={`https://www.youtube.com/embed/${trailerVideo[0]?.key}?autoplay=1&mute=1&rel=0&playlist=${trailerVideo[0]?.key}&loop=1`}
